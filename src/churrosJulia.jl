@@ -1,5 +1,7 @@
 module churrosJulia
 
-# Write your package code here.
+export churros
+
+include("churro.jl")
 
 end
