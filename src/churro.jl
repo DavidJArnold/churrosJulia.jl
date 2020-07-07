@@ -32,6 +32,7 @@ function churro(str;diagnostics = false,live = false)
     global i
     global out
     global filled
+    global loops
 
     while i <= length(code)
         # number or command?
@@ -164,7 +165,9 @@ function sub()
 end
 
 function openLoop()
-    if get==0
+    if get_()==0
+        global i
+        global loops
         # jump forwards
         # i = find(loops[i+1:end]==(loops[i]-1),1)+i+1
         i = findnext(loops.==loops[i],i+1)
@@ -172,19 +175,18 @@ function openLoop()
 end
 
 function closeLoop()
-    if get!=0
+    if get_()!=0
+        global i
+        global loops
         # loop again
         # i = find(loops(1:i-1)==loops(i),1,'last')
-        i = findlast(loops.==loops[i-1],i-1)
+        i = findprev(loops.==loops[i+1],i-1)+1
     end
 end
 
 function store()
     global mem
-    print(peek(1))
     A,B = get2()
-    mem[1] = 1
-    print("$(mem[1:5])\n")
     mem[A+1] = B
 end
 
