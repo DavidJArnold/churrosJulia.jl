@@ -1,7 +1,7 @@
 module churrosJulia
 
-export churros
-
 include("churro.jl")
+
+export churro
 
 end

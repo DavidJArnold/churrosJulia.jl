@@ -1,7 +1,7 @@
 using churrosJulia
+churro("{o}====} {======={o} {{==o}")
 
-
-# str = "{o}====} {======={o} {{==o}"
+# str = "{o}====} {======={o} {{==o}" # prints integer 4
 # code = [s.match for s in eachmatch(r"{(=*){(o*)}|{(o*)}(=*)}",str)]
 
 # str = "{*}==========} {*}==========} {={o} {*}==========} {={o} {*}========} {={o}

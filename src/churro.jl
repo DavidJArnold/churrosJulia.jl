@@ -18,7 +18,7 @@ function churro(str;diagnostics = false,live = false)
     # Number format {o}====} with value given by number of equal signs, and
     # filled churros corresponding to negative numbers
 
-    stack = Int64[]
+    stack = Array{Int64,1}[]
     mem = zeros(Int64,1,1000)
 
     code,loops = parseCodeAndLoops(str)
@@ -91,7 +91,7 @@ function churro(str;diagnostics = false,live = false)
         i += 1
     end
 
-    return out
+    return join(out)
 end
 
 # Parse numbers
@@ -125,11 +125,13 @@ function pop()
 end
 
 function peek(n)
+    global stack
     A = stack[n]
 end
 
 # does a pop or a peek depending on whether or not the churro is filled
 function get_()
+    global filled
     if filled
         return peek(1)
     else
@@ -138,6 +140,7 @@ function get_()
 end
 
 function get2()
+    global filled
     if filled
         A = peek(1)
         B = peek(2)
@@ -177,12 +180,17 @@ function closeLoop()
 end
 
 function store()
-    A,B = get2
+    global mem
+    print(peek(1))
+    A,B = get2()
+    mem[1] = 1
+    print("$(mem[1:5])\n")
     mem[A+1] = B
 end
 
 function retrieve()
-    A = get;
+    global mem
+    A = get()
     if A+1>numel(mem)
         mem[A+1] = 0
     end
@@ -193,7 +201,7 @@ function printInt()
     global out
     A = string(get_())
     if isempty(out)
-        out = [A]
+        out = join([A])
     else
         out = join(hcat(out,A))
     end
@@ -205,7 +213,7 @@ function printChar()
     global out
     A = string(Char(get_()))
     if isempty(out)
-        out = [A]
+        out = join([A])
     else
         out = join(hcat(out,A))
     end
