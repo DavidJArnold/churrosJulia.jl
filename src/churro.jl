@@ -113,7 +113,7 @@ function push_(A)
     if isempty(stack)
         stack = [A]
     else
-        stack = hcat(A,stack)
+        stack = vcat(A,stack)
     end
 
 end
@@ -187,16 +187,16 @@ end
 function store()
     global mem
     A,B = get2()
-    mem[A+1] = B
+    mem[A] = B
 end
 
 function retrieve()
     global mem
-    A = get()
-    if A+1>numel(mem)
-        mem[A+1] = 0
+    A = get_()
+    if A>numel(mem)
+        mem[A] = 0
     end
-    push_(mem[A+1])
+    push_(mem[A])
 end
 
 function printInt()
