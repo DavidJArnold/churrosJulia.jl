@@ -46,10 +46,10 @@ loopParse2 = "{==={o} {===={o} {==={o} {==={o} {===={o}"
     catch e
         e.msg
     end == "Too many loops were closed"
-    @test try
         churro(loopParse2)
+    @test try
         "no error"
     catch e
-        e.msg
     end == "Not enough loops were closed"
+        e.msg
 end
