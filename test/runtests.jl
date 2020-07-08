@@ -38,4 +38,5 @@ skipLoops3 = "{o}} {==={*} {o}=} {===={*} {o}} {======={o} {======={o}"
     @test churro(skipLoops1)=="0"
     @test churro(skipLoops2)=="01"
     @test churro(skipLoops3)=="00"
+    @test churro(fibClean,diagnostics = true)=="55"
 end

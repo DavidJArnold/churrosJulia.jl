@@ -18,11 +18,11 @@ function churro(str;diagnostics = false,live = false)
     # Number format {o}====} with value given by number of equal signs, and
     # filled churros corresponding to negative numbers
 
-    stack = Array{Int64,1}[]
-    mem = zeros(Int64,1,1000)
-
     code,loops = parseCodeAndLoops(str)
 
+    # initialise global variables
+    stack = Array{Int64,1}[]
+    mem = zeros(Int64,1,1000)
     i = 1
     out = Array{String,1}[]
     filled  = 0
