@@ -29,6 +29,8 @@ skipLoops3 = "{o}} {==={*} {o}=} {===={*} {o}} {======={o} {======={o}"
 loopParse1 = "{==={o} {===={o} {===={o} {==={o} {==={o}"
 loopParse2 = "{==={o} {===={o} {==={o} {==={o} {===={o}"
 
+invalidMem = "{o}==} {======{o} {======={o}"
+
 @testset "churrosJulia.jl" begin
     @test churro("{o}====} {======={o} {{==o}")=="4"
     @test churro("{o}====} {o}====} {={o} {======={o}")=="8"
@@ -52,4 +54,5 @@ loopParse2 = "{==={o} {===={o} {==={o} {==={o} {===={o}"
     catch e
         e.msg
     end == "Not enough loops were closed"
+    @test churro(invalidMem) == "0"
 end

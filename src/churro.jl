@@ -1,4 +1,4 @@
-function churro(str;diagnostics = false,live = false)
+function churro(str;diagnostics = false)
 
     # Churro            Operation
     # {{o}              pop A; discard A
@@ -34,22 +34,24 @@ function churro(str;diagnostics = false,live = false)
     global filled
     global loops
 
+    # step through code
     while i <= length(code)
-        # number or command?
         currCode = code[i]
+
         if occursin(r"{[o*]}(=*)}",currCode) # it's a number
             push_(getNumber(currCode)) # push that number
             diagnostics && print("Number $(stack[1])\n")
         elseif occursin(r"{(=*){[o*]}",currCode) # it's a command
-            opCode = churroLength(currCode)
+            opCode = churroLength(currCode) # identify command
             filled = currCode[end-1]=='*'
-            if opCode == 0
+            # now execute appriopriate action
+            if opCode == 0 # pop and discard
                 diagnostics && print("get\n")
                 get_()
-            elseif opCode == 1
+            elseif opCode == 1 # pop 2 and add
                 diagnostics && print("add\n")
                 add()
-            elseif opCode == 2
+            elseif opCode == 2 # pop 2 and subtract
                 diagnostics && print("subtract\n")
                 sub()
             elseif opCode == 3 # open loop
@@ -58,31 +60,27 @@ function churro(str;diagnostics = false,live = false)
             elseif opCode == 4 # close loop
                 diagnostics && print("end loop\n")
                 closeLoop()
-            elseif opCode == 5
+            elseif opCode == 5 # store in memory
                 diagnostics && print("store\n")
                 store()
-            elseif opCode == 6
+            elseif opCode == 6 # retrieve from memory
                 diagnostics && print("retrieve\n")
                 retrieve()
-            elseif opCode == 7
+            elseif opCode == 7 # print as integer
                 diagnostics && print("print int\n")
                 printInt()
-            elseif opCode == 8
+            elseif opCode == 8 # print as character
                 diagnostics && print("print char\n")
                 printChar()
-            elseif opCode == 9
+            elseif opCode == 9 # read character from stdin
                 diagnostics && print("read\n")
                 readChar()
-            elseif opCode == 10
+            elseif opCode == 10 # exit
                 diagnostics && print("exit\n")
-                break
+                break # break to end execution
             end
         else
             error("$(code{i}) is not a churro")
-        end
-        if isempty(i)
-            # if the code ends with a close-loop, break here
-            break
         end
 
         # display diagnostics for first 10 memory cells
@@ -92,33 +90,29 @@ function churro(str;diagnostics = false,live = false)
         i += 1
     end
 
-    return join(out)
+    return join(out) # combines output into a single string
 end
 
-# Parse numbers
+# values of number churros
 function getNumber(s)
     val = churroLength(s);
     sgn = occursin("*",s) ? -1 : 1
     return sgn*val
 end
 
+# number of = signs in a churro
 function churroLength(s)
     return length(findall(r"(=)",s))
 end
 
-# Stack management
+# Stack management functions
 
-function push_(A)
+function push_(A) # add to stack
     global stack
-    if isempty(stack)
-        stack = [A]
-    else
-        stack = vcat(A,stack)
-    end
-
+    isempty(stack) ? stack = [A] : stack = vcat(A,stack)
 end
 
-function pop()
+function pop() # remove from stack
     global stack
     if length(stack)>1
         A = stack[1]
@@ -130,13 +124,12 @@ function pop()
     return A
 end
 
-function peek(n)
+function peek(n) # look at n-th stack element
     global stack
     return stack[n]
 end
 
-# does a pop or a peek depending on whether or not the churro is filled
-function get_()
+function get_() # pop/peek if the churro is/isn't filled
     global filled
     if filled
         return peek(1)
@@ -145,7 +138,7 @@ function get_()
     end
 end
 
-function get2()
+function get2() # pop/peek 2 elements as appropriate
     global filled
     if filled
         A = peek(1)
@@ -157,7 +150,7 @@ function get2()
     return A,B
 end
 
-# Function definitions (not control flow)
+# Function definitions
 
 function add()
     A,B = get2()
@@ -173,8 +166,7 @@ function openLoop()
     if get_()==0
         global i
         global loops
-        # jump forwards
-        # i = find(loops[i+1:end]==(loops[i]-1),1)+i+1
+        # jump forwards to after loop
         i = findnext(loops.==loops[i],i+1)
     end
 end
@@ -183,25 +175,26 @@ function closeLoop()
     if get_()!=0
         global i
         global loops
-        # loop again
-        # i = find(loops(1:i-1)==loops(i),1,'last')
+        # loop again back to start
         i = findprev(loops.==loops[i+1],i-1)+1
     end
 end
 
-function store()
+function store() # into memory
     global mem
     A,B = get2()
     mem[A] = B
 end
 
-function retrieve()
+function retrieve() # from memory
     global mem
     A = get_()
-    if A>length(mem)
+    if haskey(mem,A)
+        push_(mem[A])
+    else
+        # if nothing is in that memory location, push 0
         push_(0)
     end
-    push_(mem[A])
 end
 
 function printInt()
@@ -212,8 +205,6 @@ function printInt()
     else
         out = join(hcat(out,A))
     end
-
-    # live && disp(out[1])
 end
 
 function printChar()
@@ -224,7 +215,6 @@ function printChar()
     else
         out = join(hcat(out,A))
     end
-    # live && disp(out[1])
 end
 
 function readChar()
@@ -233,7 +223,7 @@ function readChar()
     push_(Int(s[1]))
 end
 #
-# diagnostic function
+# diagnostic function to help debugging
 function diagnose(code;N=10)
     print("Code location $i $(code[i])\n")
     print("Stack: $(stack[1:min(N,length(stack))])\n")
@@ -244,8 +234,9 @@ function diagnose(code;N=10)
     print("Output: $(out[1:min(N,length(out))])\n")
 end
 
-# Parse code
+# Parse code and work out where loops start/end
 function parseCodeAndLoops(str)
+    # first get churros from other text using a regex
     code = [s.match for s in eachmatch(r"{(=*){[o*]}|{[o*]}(=*)}",str)]
 
     codeLen = length(code)
@@ -253,6 +244,7 @@ function parseCodeAndLoops(str)
     # checking the loops are properly defined and getting positions
     loops = zeros(Int64,1,codeLen); # counts number of open loops
     for k = 1:codeLen
+        # use regexes to match both {==={o} and {==={*}
         if !isnothing(match(r"{==={.}",code[k]))
             loops[k:end] = loops[k:end] .+ 1;
         elseif !isnothing(match(r"{===={.}",code[k]))
