@@ -26,7 +26,19 @@ str = "{*}==========} {*}==========} {={o} {*}==========} {={o} {*}========} {={
 churro(str,diagnostics = true)
 
 # first 10 fibonacci numbers
-str = "{o}=} {o}=} {o}==========} {==={*} {o}=} {====={o} {={*} {o}=} {======{o} {===={o} {======={o}"
+str = "
+{o}=} {o}=} push 2 1's
+{o}==========} push 10
+{==={*} peek stack, exit loop if it is 0
+    {o}=} push 1
+    {====={o} put 10 in memory 1
+    {={*} peek top 2 spots and push their sum
+    {o}=} push 1
+    {======{o} pop 1 get memory location 1
+    {*}=} push -1
+    {={o} pop 10 -1 push 10+-1
+    {===={o} exit loop if 10-1!=0
+    {======={o} pop and print"
 churro(str,diagnostics = true)
 
 

@@ -193,8 +193,8 @@ end
 function retrieve()
     global mem
     A = get_()
-    if A>numel(mem)
-        mem[A] = 0
+    if A>length(mem)
+        push_(0)
     end
     push_(mem[A])
 end
