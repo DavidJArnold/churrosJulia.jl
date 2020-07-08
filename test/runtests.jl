@@ -20,10 +20,22 @@ fibDirty = "{o}=} {o}=} push 2 1's
 fibClean = "{o}=} {o}=} {o}==========} {o}==} {=={o} {==={*} {o}=} {====={o}
         {={*} {o}=} {======{o} {*}=} {={o} {===={*} {{o} {======={o}"
 
+breakTest = "{o}=} {======={o} {=========={o} {o}=} {======={o}"
+
+skipLoops1 = "{o}} {==={*} {o}=} {===={*} {======={o}"
+
+skipLoops2 = "{o}=} {==={*} {o}} {===={*} {======={o} {======={o}"
+
+skipLoops3 = "{o}} {==={*} {o}=} {===={*} {o}} {======={o} {======={o}"
+
 @testset "churrosJulia.jl" begin
     @test churro("{o}====} {======={o} {{==o}")=="4"
     @test churro("{o}====} {o}====} {={o} {======={o}")=="8"
     @test churro(HelloWorld)=="Hello, World!"
     @test churro(fibDirty)=="55"
     @test churro(fibClean)=="55"
+    @test churro(breakTest)=="1"
+    @test churro(skipLoops1)=="0"
+    @test churro(skipLoops2)=="01"
+    @test churro(skipLoops3)=="00"
 end

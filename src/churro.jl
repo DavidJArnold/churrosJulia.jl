@@ -120,14 +120,19 @@ end
 
 function pop()
     global stack
-    A = stack[1]
-    stack = stack[2:end]
+    if length(stack)>1
+        A = stack[1]
+        stack = stack[2:end]
+    else
+        A = stack[1]
+        stack = Array{Int64,1}[]
+    end
     return A
 end
 
 function peek(n)
     global stack
-    A = stack[n]
+    return stack[n]
 end
 
 # does a pop or a peek depending on whether or not the churro is filled
