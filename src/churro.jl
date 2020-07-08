@@ -22,7 +22,7 @@ function churro(str;diagnostics = false,live = false)
 
     # initialise global variables
     stack = Array{Int64,1}[]
-    mem = zeros(Int64,1,1000)
+    mem = Dict()
     i = 1
     out = Array{String,1}[]
     filled  = 0
@@ -237,7 +237,10 @@ end
 function diagnose(code;N=10)
     print("Code location $i $(code[i])\n")
     print("Stack: $(stack[1:min(N,length(stack))])\n")
-    print("Memory: $(mem[1:min(N,length(mem))])\n")
+    print("Memory:\n")
+    for (key, value) in mem
+        println("Location ", key, " = ", value)
+    end
     print("Output: $(out[1:min(N,length(out))])\n")
 end
 
