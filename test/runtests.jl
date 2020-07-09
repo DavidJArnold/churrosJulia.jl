@@ -32,6 +32,7 @@ loopParse2 = "{==={o} {===={o} {==={o} {==={o} {===={o}"
 invalidMem = "{o}==} {======{o} {======={o}"
 
 @testset "churrosJulia.jl" begin
+    @test churro("")==""
     @test churro("{o}====} {======={o} {{==o}")=="4"
     @test churro("{o}====} {o}====} {={o} {======={o}")=="8"
     @test churro(HelloWorld)=="Hello, World!"

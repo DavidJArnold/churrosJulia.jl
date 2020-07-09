@@ -253,7 +253,7 @@ function parseCodeAndLoops(str)
     end
 
     # If the loops are not properly defined
-    if loops[end]!=0 || any(loops.<0)
+    if !isempty(loops) && (loops[end]!=0 || any(loops.<0))
         if any(loops.<0)
             error("Too many loops were closed")
         else
