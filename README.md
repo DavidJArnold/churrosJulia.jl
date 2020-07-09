@@ -13,6 +13,6 @@ This implementation uses a dictionary for memory and an array for the stack.
 
 To use this package first add it using `Pkg`: `add https://github.com/DavidJArnold/churrosJulia.jl`.
 
-Then `using churrosJulia` includes the modeule and you can run churro code in a string `str` like `out = churro(str)`, where `out` contains the output formatted as a string.
+Then `using churrosJulia` includes the module and you can run churro code in a string `str` by doing `out = churro(str)`, where `out` contains the output formatted as a string.
 
-For debugging purposes `out = churro(str, diagnostics=true)` which prints out information such as stack contents, memory contents, current code point, etc. as the program runs.
+For debugging purposes `out = churro(str, diagnostics=true)` prints out information such as stack contents, memory contents, current code point, etc. as the program runs.
