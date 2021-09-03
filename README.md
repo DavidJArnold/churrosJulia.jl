@@ -5,7 +5,7 @@
 [![Coverage](https://codecov.io/gh/DavidJArnold/churrosJulia.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/DavidJArnold/churrosJulia.jl)
 [![Coverage Status](https://coveralls.io/repos/github/DavidJArnold/churrosJulia.jl/badge.svg?branch=master)](https://coveralls.io/github/DavidJArnold/churrosJulia.jl?branch=master&service=github)
 
-[Churro](https://esolangs.org/wiki/Churro) is a stack-based esolang the uses churros as code elements. See also the [official Haskell implementation](https://github.com/TheLastBanana/Churro/).
+[Churro](https://esolangs.org/wiki/Churro) is a stack-based esolang that uses churros as code elements. See also the [official Haskell implementation](https://github.com/TheLastBanana/Churro/).
 
 This implementation uses a dictionary for memory and an array for the stack.
 
